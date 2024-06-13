@@ -257,9 +257,9 @@ bool id_existe(Usuari_t *usuaris, int num_usuaris, int id) {
 
 /**
  * @brief Afegeix un usuari nou al fitxer d'usuaris.
- * @param new_user Punter a l'estructura Usuari_t que conté les dades del nou usuari.
+ * @param nou_usuari Punter a l'estructura Usuari_t que conté les dades del nou usuari.
  */
-void afegir_usuari_al_arxiu(Usuari_t *new_user) {
+void afegir_usuari_al_arxiu(Usuari_t *nou_usuari) {
     FILE *file = fopen("usuaris.txt", "a"); // Obre el fitxer en mode append
     
 
@@ -268,7 +268,7 @@ void afegir_usuari_al_arxiu(Usuari_t *new_user) {
         printf("No se pudo abrir el archivo para escribir.\n");
     } else {
         // Escriu les dades del nou usuari al fitxer
-        fprintf(file, "\n%d\n%s\n%c\n%s\n%s\n", new_user->id, new_user->nom, new_user->genere, new_user->procedencia, new_user->data);
+        fprintf(file, "\n%d\n%s\n%c\n%s\n%s\n", nou_usuari->id, nou_usuari->nom, nou_usuari->genere, nou_usuari->procedencia, nou_usuari->data);
         fclose(file); // Tanca el fitxer després d'escriure les dades
     }
 }
@@ -291,29 +291,29 @@ int afegir_usuari(Usuari_t **usuaris, int *num_usuaris, amist_propers_t *amistat
         printf("Error en reservar memoria para un nuevo usuario.\n");
         resultat = 0;
     } else {
-        Usuari_t *new_user = &((*usuaris)[*num_usuaris]); // Obté el punter al nou usuari
+        Usuari_t *nou_usuari = &((*usuaris)[*num_usuaris]); // Obté el punter al nou usuari
 
         // Solicita un ID únic per al nou usuari
         do {
             printf("Introduce el ID del nuevo usuario: ");
-            scanf("%d", &new_user->id);
-            if (id_existe(*usuaris, *num_usuaris, new_user->id)) {
+            scanf("%d", &nou_usuari->id);
+            if (id_existe(*usuaris, *num_usuaris, nou_usuari->id)) {
                 printf("Este ID ya existe, por favor introduce un ID diferente.\n");
             }
-        } while (id_existe(*usuaris, *num_usuaris, new_user->id));
+        } while (id_existe(*usuaris, *num_usuaris, nou_usuari->id));
 
         // Solicita les dades del nou usuari
         printf("Introduce el nombre del nuevo usuario: ");
-        scanf("%s", new_user->nom);
+        scanf("%s", nou_usuari->nom);
         printf("Introduce el genero del nuevo usuario (H o D): ");
-        scanf(" %c", &new_user->genere);
+        scanf(" %c", &nou_usuari->genere);
         printf("Introduce la procedencia del nuevo usuario: ");
-        scanf("%s", new_user->procedencia);
+        scanf("%s", nou_usuari->procedencia);
         printf("Introduce la fecha de nacimiento del nuevo usuario: ");
-        scanf("%s", new_user->data);
+        scanf("%s", nou_usuari->data);
 
         *num_usuaris = tamany; // Actualitza el nombre total d'usuaris
-        afegir_usuari_al_arxiu(new_user); // Afegeix el nou usuari al fitxer
+        afegir_usuari_al_arxiu(nou_usuari); // Afegeix el nou usuari al fitxer
 
         // Actualitza la matriu de proximitat
         propers_t *new_propers = malloc(tamany * tamany * sizeof(propers_t));
